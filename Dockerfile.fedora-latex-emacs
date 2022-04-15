@@ -1,4 +1,4 @@
 FROM fedora:latest
-RUN dnf update --refresh
+RUN dnf update -y
 RUN dnf install -y emacs texlive-scheme-full
 
