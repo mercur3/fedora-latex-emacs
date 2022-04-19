@@ -1,4 +1,6 @@
 FROM fedora:latest
+RUN rm /etc/dnf/dnf.conf
+COPY dnf.conf /etc/dnf/
 RUN dnf update -y
-RUN dnf install -y emacs texlive-scheme-full
+RUN dnf install -y emacs-nox texlive-scheme-full
 

@@ -3,16 +3,11 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 steps:
-  - task: AzureKeyVault@1
-    inputs:
-      azureSubscription: "Azure subscription 1"             ## YOUR_SERVICE_CONNECTION_NAME
-      KeyVaultName: "kye-vault"                             ## YOUR_KEY_VAULT_NAME
-      SecretsFilter: "DOCKER-PASS"                          ## YOUR_SECRET_NAME. Default value: *
-      RunAsPreJob: false                                    ## Make the secret(s) available to the whole job
   - script: |
+      echo building images
       docker build -f Dockerfile.fedora-latex-emacs -t mercur3/fedora-latex-emacs
       docker login -u mercur3 -p $DOCKER_PASSWORD
       docker push mercur3/fedora-latex-emacs
     env:
-      DOCKER_PASSWORD: $(DOCKER-PASS)
+      DOCKER_PASSWORD: $(DOCKER_PASSWORD)
 
