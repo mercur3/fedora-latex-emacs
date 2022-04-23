@@ -1,8 +1,9 @@
+FROM fedora:latest
+
 LABEL description="Fedora + texlive-full + Emacs. Can be used to build LaTeX documents with org-mode"
 LABEL repository="https://gitlab.com/mercur3/dockerfiles.git"
 LABEL readme="README.org"
 
-FROM fedora:latest
 RUN rm /etc/dnf/dnf.conf
 COPY dnf.conf /etc/dnf/
 RUN dnf update -y
