@@ -4,6 +4,8 @@ LABEL description="Fedora + texlive-full + Emacs. Can be used to build LaTeX doc
 LABEL repository="https://gitlab.com/mercur3-dockerfiles/fedora-latex-emacs.git"
 LABEL readme="README.org"
 
+# By default dnf is configured as a singletheaded application. This configuration aims to increase
+# build speed as it spends less time doing I/O operations and connecting to the mirrors.
 RUN rm /etc/dnf/dnf.conf
 COPY dnf.conf /etc/dnf/
 RUN dnf update -y
