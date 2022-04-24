@@ -3,14 +3,19 @@ A *bloated* image that contains the whole texlive packages found in Fedora repos
 
 ** Q&A
 Q: Why Fedora?
+
 A: Fedora usually ships the latest packages in contrast to Debian.
 
+
 Q: Why is the image so bloated?
+
 A: It installs every package that is located under =texlive= group, also some of them have external
 dependencies which increases the build size. Unfortunately only this ensures that you will have
 every texlive package you may need.
 
+
 Q: What's the point of shipping Emacs?
+
 A: Emacs is actually part of my workflow as I first write the text in [[https://orgmode.org/][org-mode]] (usually in multiple
 files which will be linked later) and than by using Emacs convert them to =.tex= files which than
 are fed into =pdflatex=. It shouldn't be much of concern as the size of Emacs is so small compared
