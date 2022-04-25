@@ -4,12 +4,15 @@ pool:
   vmImage: ubuntu-latest
 steps:
   - script: |
-      echo "Building the image"
-      echo "------------------------------------------------------"
-      docker build -f Dockerfile.fedora-latex-emacs -t $IMG_NAME .
+      echo "Building the images"
+      echo "------------------------------------------------------\n"
+      docker build -f Dockerfile.medium -t $MEDIUM_IMG .
+      docker build -f Dockerfile.full -t $FULL_IMG .
       docker login -u mercur3 -p $DOCKER_PASSWORD
-      docker push $IMG_NAME
+      docker push $MEDIUM_IMG
+      docker push $FULL_IMG
     env:
       DOCKER_PASSWORD: $(DOCKER_PASSWORD)
-      IMG_NAME: mercur3/fedora-latex-emacs
+      MEDIUM_IMG: mercur3/fedora-latex-emacs:medium
+      FULL_IMG: mercur3/fedora-latex-emacs:full
 

@@ -1,6 +1,6 @@
 FROM fedora:latest
 
-LABEL description="Fedora + texlive-full + Emacs. Can be used to build LaTeX documents with org-mode"
+LABEL description="Fedora + texlive-medium + Emacs. Can be used to build LaTeX documents with org-mode"
 LABEL repository="https://gitlab.com/mercur3-dockerfiles/fedora-latex-emacs.git"
 LABEL readme="README.org"
 
@@ -9,5 +9,5 @@ LABEL readme="README.org"
 RUN rm /etc/dnf/dnf.conf
 COPY dnf.conf /etc/dnf/
 RUN dnf update -y
-RUN dnf install -y emacs-nox texlive-scheme-full
+RUN dnf install -y emacs-nox texlive-scheme-medium
 
