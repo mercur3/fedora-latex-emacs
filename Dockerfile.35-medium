@@ -1,4 +1,4 @@
-FROM fedora:latest
+FROM fedora:35
 
 LABEL description="Fedora + texlive-medium + Emacs. Can be used to build LaTeX documents with org-mode"
 LABEL repository="https://gitlab.com/mercur3-dockerfiles/fedora-latex-emacs.git"
@@ -8,6 +8,6 @@ LABEL readme="README.org"
 # build speed as it spends less time doing I/O operations and connecting to the mirrors.
 RUN rm /etc/dnf/dnf.conf
 COPY dnf.conf /etc/dnf/
-RUN dnf update -y
-RUN dnf install -y emacs-nox texlive-scheme-medium
+RUN dnf update -y --nodocs
+RUN dnf install -y --nodocs emacs-nox texlive-scheme-medium
 

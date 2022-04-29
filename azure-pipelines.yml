@@ -6,13 +6,13 @@ steps:
   - script: |
       echo "Building the images"
       echo "------------------------------------------------------\n"
-      docker build -f Dockerfile.medium -t $MEDIUM_IMG .
-      docker build -f Dockerfile.full -t $FULL_IMG .
+      docker build -f Dockerfile.35-medium -t $MEDIUM_35 .
+      docker build -f Dockerfile.35-full -t $FULL_35 .
       docker login -u mercur3 -p $DOCKER_PASSWORD
       docker push $MEDIUM_IMG
       docker push $FULL_IMG
     env:
       DOCKER_PASSWORD: $(DOCKER_PASSWORD)
-      MEDIUM_IMG: mercur3/fedora-latex-emacs:medium
-      FULL_IMG: mercur3/fedora-latex-emacs:full
+      MEDIUM_35: mercur3/fedora-latex-emacs:35-medium
+      FULL_35: mercur3/fedora-latex-emacs:35-full
 
