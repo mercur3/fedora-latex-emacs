@@ -9,8 +9,8 @@ steps:
       docker build -f Dockerfile.35-medium -t $MEDIUM_35 .
       docker build -f Dockerfile.35-full -t $FULL_35 .
       docker login -u mercur3 -p $DOCKER_PASSWORD
-      docker push $MEDIUM_IMG
-      docker push $FULL_IMG
+      docker push $MEDIUM_35
+      docker push $FULL_35
     env:
       DOCKER_PASSWORD: $(DOCKER_PASSWORD)
       MEDIUM_35: mercur3/fedora-latex-emacs:35-medium

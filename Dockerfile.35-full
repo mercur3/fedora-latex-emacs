@@ -4,5 +4,5 @@ LABEL description="Fedora + texlive-full + Emacs. Can be used to build LaTeX doc
 LABEL repository="https://gitlab.com/mercur3-dockerfiles/fedora-latex-emacs.git"
 LABEL readme="README.org"
 
-RUN dnf install -y --nodocs texlive-scheme-full
+RUN dnf install texlive-scheme-full
 
