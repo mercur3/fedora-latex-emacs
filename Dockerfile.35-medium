@@ -9,6 +9,6 @@ LABEL readme="README.org"
 RUN rm /etc/dnf/dnf.conf
 COPY dnf.conf /etc/dnf/
 RUN dnf remove vi tmux
-RUN dnf update
-RUN dnf install emacs-nox texlive-scheme-medium
+RUN dnf update --nodocs
+RUN dnf install --nodocs emacs-nox texlive-scheme-medium
 
