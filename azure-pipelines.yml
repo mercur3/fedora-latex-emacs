@@ -8,7 +8,7 @@ steps:
       echo "------------------------------------------------------\n"
       docker build -f Dockerfile.35-medium -t $MEDIUM_35 .
       docker build -f Dockerfile.35-full -t $FULL_35 .
-      docker login -u mercur3 -p $DOCKER_PASSWORD
+      echo "$DOCKER_PASSWORD" | docker login -u mercur3 --password-stdin
       docker push $MEDIUM_35
       docker push $FULL_35
     env:
