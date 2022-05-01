@@ -10,4 +10,5 @@ RUN rm /etc/dnf/dnf.conf
 COPY dnf.conf /etc/dnf/
 RUN dnf update --nodocs
 RUN dnf install --nodocs emacs-nox texlive-scheme-medium
+RUN dnf clean all
 

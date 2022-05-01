@@ -5,4 +5,5 @@ LABEL repository="https://gitlab.com/mercur3-dockerfiles/fedora-latex-emacs.git"
 LABEL readme="README.org"
 
 RUN dnf install --nodocs texlive-scheme-full
+RUN dnf clean all
 
