@@ -9,7 +9,7 @@ LABEL readme="README.org"
 RUN rm /etc/dnf/dnf.conf
 COPY dnf.conf /etc/dnf/
 RUN dnf update --nodocs; \
-    dnf install --nodocs emacs-nox texlive-scheme-medium; \
+    dnf install --nodocs emacs-nox texlive-scheme-medium;
 RUN dnf clean all; \
-    rm -rf /var/log /tmp; \
+    rm -rf /var/log /tmp;
 
