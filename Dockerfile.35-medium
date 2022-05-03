@@ -8,7 +8,8 @@ LABEL readme="README.org"
 # build speed as it spends less time doing I/O operations and connecting to the mirrors.
 RUN rm /etc/dnf/dnf.conf
 COPY dnf.conf /etc/dnf/
-RUN dnf update --nodocs
-RUN dnf install --nodocs emacs-nox texlive-scheme-medium
-RUN dnf clean all
+RUN dnf update --nodocs; \
+    dnf install --nodocs emacs-nox texlive-scheme-medium; \
+RUN dnf clean all; \
+    rm -rf /var/log /tmp; \
 
