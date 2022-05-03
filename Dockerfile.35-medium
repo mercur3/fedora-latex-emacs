@@ -1,15 +1,9 @@
-FROM fedora:35
+FROM mercur3/fedora-latex-emacs:35-base
 
 LABEL description="Fedora + texlive-medium + Emacs. Can be used to build LaTeX documents with org-mode"
 LABEL repository="https://gitlab.com/mercur3-dockerfiles/fedora-latex-emacs.git"
 LABEL readme="README.org"
 
-# By default dnf is configured as a singletheaded application. This configuration aims to increase
-# build speed as it spends less time doing I/O operations and connecting to the mirrors.
-RUN rm /etc/dnf/dnf.conf
-COPY dnf.conf /etc/dnf/
-RUN dnf update --nodocs; \
-    dnf install --nodocs emacs-nox texlive-scheme-medium;
 RUN dnf clean all; \
     rm -rf /var/log /tmp;
 

@@ -1,0 +1,9 @@
+FROM fedora:35
+
+# By default dnf is configured as a singletheaded application. This configuration aims to increase
+# build speed as it spends less time doing I/O operations and connecting to the mirrors.
+RUN rm /etc/dnf/dnf.conf
+COPY dnf.conf /etc/dnf/
+RUN dnf update --nodocs; \
+    dnf install --nodocs emacs-nox texlive-scheme-medium;
+

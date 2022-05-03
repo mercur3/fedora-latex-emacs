@@ -1,4 +1,4 @@
-FROM mercur3/fedora-latex-emacs:35-medium
+FROM mercur3/fedora-latex-emacs:35-base
 
 LABEL description="Fedora + texlive-full + Emacs. Can be used to build LaTeX documents with org-mode"
 LABEL repository="https://gitlab.com/mercur3-dockerfiles/fedora-latex-emacs.git"

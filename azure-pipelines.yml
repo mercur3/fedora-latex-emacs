@@ -6,6 +6,7 @@ steps:
   - script: |
       echo "Building the images"
       echo "------------------------------------------------------\n"
+      docker build -f Dockerfile.35-base -t $BASE_35 .
       docker build -f Dockerfile.35-medium -t $MEDIUM_35 .
       docker build -f Dockerfile.35-full -t $FULL_35 .
       echo "$DOCKER_PASSWORD" | docker login -u mercur3 --password-stdin
@@ -13,6 +14,7 @@ steps:
       docker push $FULL_35
     env:
       DOCKER_PASSWORD: $(DOCKER_PASSWORD)
+      BASE_35: mercur3/fedora-latex-emacs:35-base
       MEDIUM_35: mercur3/fedora-latex-emacs:35-medium
       FULL_35: mercur3/fedora-latex-emacs:35-full
 
