@@ -5,5 +5,6 @@ FROM fedora:35
 RUN rm /etc/dnf/dnf.conf
 COPY dnf.conf /etc/dnf/
 RUN dnf update --nodocs; \
-    dnf install --nodocs emacs-nox texlive-scheme-medium;
+    dnf install --nodocs emacs-nox texlive-scheme-medium; \
+    dnf install "tex(datetime.sty)";
 
