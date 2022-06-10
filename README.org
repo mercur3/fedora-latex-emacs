@@ -1,5 +1,19 @@
 * Fedora + LaTeX + Emacs
-A *bloated* image that contains the whole texlive packages found in Fedora repositories.
+A /bloated/ image that contains the texlive packages found in Fedora repositories.
+
+** Format
+=mercur3/fedora-latex-emacs:<version>-<scheme>=
+
+*** Version
+2 latest supported versions of Fedora. Possible values:
+- 35
+- 36
+
+*** Scheme
+LaTeX scheme as packaged by Fedora. Note that there are some small modifications where certain
+important packages are placed in medium scheme. Possible values:
+- medium
+- full
 
 ** Q&A
 Q: Why Fedora?
