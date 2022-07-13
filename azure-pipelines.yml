@@ -1,35 +1,36 @@
 trigger:
   - master
-job:
-  displayName: Build the images
-  pool:
-    vmImage: ubuntu-latest
-  strategy:
-    parallel: 10
-  steps:
-    - script: |
-        echo "Building the images"
-        printf "Using %d threads\n" $(nproc)
-        echo "------------------------------------------------------\n"
-        docker build -f Dockerfile.35-base -t $BASE_35 .
-        docker build -f Dockerfile.35-medium -t $MEDIUM_35 .
-        docker build -f Dockerfile.35-full -t $FULL_35 .
-        echo "------------------------------------------------------\n"
-        docker build -f Dockerfile.36-base -t $BASE_36 .
-        docker build -f Dockerfile.36-medium -t $MEDIUM_36 .
-        docker build -f Dockerfile.36-full -t $FULL_36 .
-        
-        echo "$DOCKER_PASSWORD" | docker login -u mercur3 --password-stdin
-        docker push $MEDIUM_35
-        docker push $FULL_35
-        docker push $MEDIUM_36
-        docker push $FULL_36
-        env:
-          DOCKER_PASSWORD: $(DOCKER_PASSWORD)
-          BASE_35: mercur3/fedora-latex-emacs:35-base
-          MEDIUM_35: mercur3/fedora-latex-emacs:35-medium
-          FULL_35: mercur3/fedora-latex-emacs:35-full
-          BASE_36: mercur3/fedora-latex-emacs:36-base
-          MEDIUM_36: mercur3/fedora-latex-emacs:36-medium
-          FULL_36: mercur3/fedora-latex-emacs:36-full
+jobs:
+  - job:
+    displayName: Build the images
+    pool:
+      vmImage: ubuntu-latest
+    strategy:
+      parallel: 10
+    steps:
+      - script: |
+          echo "Building the images"
+          printf "Using %d threads\n" $(nproc)
+          echo "------------------------------------------------------\n"
+          docker build -f Dockerfile.35-base -t $BASE_35 .
+          docker build -f Dockerfile.35-medium -t $MEDIUM_35 .
+          docker build -f Dockerfile.35-full -t $FULL_35 .
+          echo "------------------------------------------------------\n"
+          docker build -f Dockerfile.36-base -t $BASE_36 .
+          docker build -f Dockerfile.36-medium -t $MEDIUM_36 .
+          docker build -f Dockerfile.36-full -t $FULL_36 .
+          
+          echo "$DOCKER_PASSWORD" | docker login -u mercur3 --password-stdin
+          docker push $MEDIUM_35
+          docker push $FULL_35
+          docker push $MEDIUM_36
+          docker push $FULL_36
+          env:
+            DOCKER_PASSWORD: $(DOCKER_PASSWORD)
+            BASE_35: mercur3/fedora-latex-emacs:35-base
+            MEDIUM_35: mercur3/fedora-latex-emacs:35-medium
+            FULL_35: mercur3/fedora-latex-emacs:35-full
+            BASE_36: mercur3/fedora-latex-emacs:36-base
+            MEDIUM_36: mercur3/fedora-latex-emacs:36-medium
+            FULL_36: mercur3/fedora-latex-emacs:36-full
 
