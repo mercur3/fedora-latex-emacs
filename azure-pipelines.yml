@@ -5,8 +5,6 @@ jobs:
     displayName: Build Fedora 35
     pool:
       vmImage: ubuntu-latest
-    strategy:
-      parallel: 10
     steps:
       - script: |
           echo "Building the images"
@@ -31,8 +29,6 @@ jobs:
     displayName: Build Fedora 36
     pool:
       vmImage: ubuntu-latest
-    strategy:
-      parallel: 10
     steps:
       - script: |
           echo "Building the images"
