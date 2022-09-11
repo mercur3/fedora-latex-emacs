@@ -49,4 +49,28 @@ jobs:
           BASE_36: mercur3/fedora-latex-emacs:36-base
           MEDIUM_36: mercur3/fedora-latex-emacs:36-medium
           FULL_36: mercur3/fedora-latex-emacs:36-full
+  - job:
+    displayName: Build Fedora 37
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+      - script: |
+          echo "Building the images"
+          printf "Using %d threads\n" $(nproc)
+          echo "------------------------------------------------------\n"
+
+          docker build -f Dockerfile.37-base -t $BASE_37 .
+          docker build -f Dockerfile.37-medium -t $MEDIUM_37 .
+          docker build -f Dockerfile.37-full -t $FULL_37 .
+          
+          echo "------------------------------------------------------\n"
+
+          echo "$DOCKER_PASSWORD" | docker login -u mercur3 --password-stdin
+          docker push $MEDIUM_37
+          docker push $FULL_37
+        env:
+          DOCKER_PASSWORD: $(DOCKER_PASSWORD)
+          BASE_37: mercur3/fedora-latex-emacs:37-base
+          MEDIUM_37: mercur3/fedora-latex-emacs:37-medium
+          FULL_37: mercur3/fedora-latex-emacs:37-full
 
