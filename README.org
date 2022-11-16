@@ -5,9 +5,10 @@ A /bloated/ image that contains the texlive packages found in Fedora repositorie
 =mercur3/fedora-latex-emacs:<version>-<scheme>=
 
 *** Version
-2 latest supported versions of Fedora. Possible values:
+The latest supported versions of Fedora. Possible values:
 - 35
 - 36
+- 37
 
 *** Scheme
 LaTeX scheme as packaged by Fedora. Note that there are some small modifications where certain
