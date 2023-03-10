@@ -1,4 +1,4 @@
-FROM fedora:36
+FROM fedora:38
 
 # By default dnf is configured as a singletheaded application. This configuration aims to increase
 # build speed as it spends less time doing I/O operations and connecting to the mirrors.
