@@ -2,10 +2,11 @@
 
 SUPPORTED_FEDORA_VERSIONS: list[int] = [35, 36, 37, 38]
 LATEX_CONFIG = ["base", "medium", "full"]
+BASE_BUILD_DIR = "build"
 
 
 def generate_dockerfiles(version: int, tag_base: str, tag_medium: str, tag_full: str) -> None:
-    with open(f"Dockerfile.{version}-base", "w") as fd:
+    with open(f"{BASE_BUILD_DIR}/Dockerfile.{version}-base", "w") as fd:
         content = f"""
 FROM fedora:{version}
 
@@ -25,7 +26,7 @@ RUN dnf update --nodocs; \\
 """
         fd.write(content)
 
-    with open(f"Dockerfile.{version}-medium", "w") as fd:
+    with open(f"{BASE_BUILD_DIR}/Dockerfile.{version}-medium", "w") as fd:
         content = f"""
 FROM {tag_base}
 
@@ -44,7 +45,7 @@ RUN dnf clean all; \\
 """
         fd.write(content)
 
-    with open(f"Dockerfile.{version}-full", "w") as fd:
+    with open(f"{BASE_BUILD_DIR}/Dockerfile.{version}-full", "w") as fd:
         content = f"""
 FROM {tag_base}
 
@@ -105,6 +106,7 @@ jobs:"""
       - script: |
           echo "Building the images"
           printf "Using %d threads\\n" $(nproc)
+          cd {BASE_BUILD_DIR}
           echo "------------------------------------------------------\\n"
           docker build -f {dockerfile_base}   -t {tag_base}   .
           docker build -f {dockerfile_medium} -t {tag_medium} .

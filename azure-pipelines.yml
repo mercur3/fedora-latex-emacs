@@ -22,6 +22,7 @@ jobs:
       - script: |
           echo "Building the images"
           printf "Using %d threads\n" $(nproc)
+          cd build
           echo "------------------------------------------------------\n"
           docker build -f Dockerfile.35-base   -t mercur3/fedora-latex-emacs:35-base   .
           docker build -f Dockerfile.35-medium -t mercur3/fedora-latex-emacs:35-medium .
@@ -48,6 +49,7 @@ jobs:
       - script: |
           echo "Building the images"
           printf "Using %d threads\n" $(nproc)
+          cd build
           echo "------------------------------------------------------\n"
           docker build -f Dockerfile.36-base   -t mercur3/fedora-latex-emacs:36-base   .
           docker build -f Dockerfile.36-medium -t mercur3/fedora-latex-emacs:36-medium .
@@ -74,6 +76,7 @@ jobs:
       - script: |
           echo "Building the images"
           printf "Using %d threads\n" $(nproc)
+          cd build
           echo "------------------------------------------------------\n"
           docker build -f Dockerfile.37-base   -t mercur3/fedora-latex-emacs:37-base   .
           docker build -f Dockerfile.37-medium -t mercur3/fedora-latex-emacs:37-medium .
@@ -100,6 +103,7 @@ jobs:
       - script: |
           echo "Building the images"
           printf "Using %d threads\n" $(nproc)
+          cd build
           echo "------------------------------------------------------\n"
           docker build -f Dockerfile.38-base   -t mercur3/fedora-latex-emacs:38-base   .
           docker build -f Dockerfile.38-medium -t mercur3/fedora-latex-emacs:38-medium .
