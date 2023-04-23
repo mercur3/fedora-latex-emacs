@@ -15,33 +15,6 @@ pool:
   vmImage: ubuntu-latest
 jobs:
   - job:
-    displayName: Building on Fedora 35
-    pool:
-      vmImage: ubuntu-latest
-    steps:
-      - script: |
-          echo "Building the images"
-          printf "Using %d threads\n" $(nproc)
-          cd build
-          echo "------------------------------------------------------\n"
-          docker build -f Dockerfile.35-base   -t mercur3/fedora-latex-emacs:35-base   .
-          docker build -f Dockerfile.35-medium -t mercur3/fedora-latex-emacs:35-medium .
-          docker build -f Dockerfile.35-full   -t mercur3/fedora-latex-emacs:35-full   .
-          echo "------------------------------------------------------\n"
-        displayName: docker build -f Dockerfile -t mercur3/__tag_name__ .
-
-      - script: |
-          echo "------------------------------------------------------\n"
-          echo "$DOCKER_PASSWORD" | docker login -u mercur3 --password-stdin
-          docker push mercur3/fedora-latex-emacs:35-medium
-          docker push mercur3/fedora-latex-emacs:35-full
-        displayName: docker push mercur3/__tag_name__
-        condition: not(eq(variables['Build.Reason'], 'PullRequest'))
-        env:
-          DOCKER_PASSWORD: $(DOCKER_PASSWORD)
-
-
-  - job:
     displayName: Building on Fedora 36
     pool:
       vmImage: ubuntu-latest
