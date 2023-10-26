@@ -19,8 +19,8 @@ FROM fedora:{version}
 # build speed as it spends less time doing I/O operations and connecting to the mirrors.
 RUN rm /etc/dnf/dnf.conf
 COPY dnf.conf /etc/dnf/
-RUN dnf update --nodocs; \\
-    dnf install --nodocs emacs-nox texlive-scheme-medium; \\
+RUN dnf update --nodocs && \\
+    dnf install --nodocs emacs-nox texlive-scheme-medium && \\
     dnf install "tex(datetime.sty)";
 
 """
@@ -39,7 +39,7 @@ LABEL description="Fedora + texlive-medium + Emacs. Can be used to build LaTeX d
 LABEL repository="https://gitlab.com/mercur3-dockerfiles/fedora-latex-emacs.git"
 LABEL readme="README.org"
 
-RUN dnf clean all; \\
+RUN dnf clean all && \\
     rm -rf /var/log /tmp;
 
 """
@@ -58,8 +58,8 @@ LABEL description="Fedora + texlive-full + Emacs. Can be used to build LaTeX doc
 LABEL repository="https://gitlab.com/mercur3-dockerfiles/fedora-latex-emacs.git"
 LABEL readme="README.org"
 
-RUN dnf install --nodocs texlive-scheme-full; \\
-    dnf clean all; \\
+RUN dnf install --nodocs texlive-scheme-full && \\
+    dnf clean all && \\
     rm -rf /var/log /tmp;
 
 """
