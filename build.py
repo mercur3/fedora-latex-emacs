@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-SUPPORTED_FEDORA_VERSIONS: list[int] = [37, 38, 39]
+SUPPORTED_FEDORA_VERSIONS: list[int] = [38, 39, 40]
 LATEX_CONFIG = ["base", "medium", "full"]
 BASE_BUILD_DIR = "build"
 
