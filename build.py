@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-SUPPORTED_FEDORA_VERSIONS: list[int] = [38, 39, 40]
+SUPPORTED_FEDORA_VERSIONS: list[int] = [41, 42, 43]
 LATEX_CONFIG = ["base", "medium", "full"]
 BASE_BUILD_DIR = "build"
 
@@ -39,8 +39,7 @@ LABEL description="Fedora + texlive-medium + Emacs. Can be used to build LaTeX d
 LABEL repository="https://gitlab.com/mercur3-dockerfiles/fedora-latex-emacs.git"
 LABEL readme="README.org"
 
-RUN dnf clean all && \\
-    rm -rf /var/log /tmp;
+RUN dnf clean all
 
 """
         fd.write(content)
@@ -59,8 +58,7 @@ LABEL repository="https://gitlab.com/mercur3-dockerfiles/fedora-latex-emacs.git"
 LABEL readme="README.org"
 
 RUN dnf install --nodocs texlive-scheme-full && \\
-    dnf clean all && \\
-    rm -rf /var/log /tmp;
+    dnf clean all;
 
 """
         fd.write(content)

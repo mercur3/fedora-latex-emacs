@@ -1,5 +1,5 @@
 
-FROM mercur3/fedora-latex-emacs:39-base
+FROM mercur3/fedora-latex-emacs:43-base
 
 ###############################################################################
 # WARNING                                                                     #
@@ -10,6 +10,5 @@ LABEL description="Fedora + texlive-medium + Emacs. Can be used to build LaTeX d
 LABEL repository="https://gitlab.com/mercur3-dockerfiles/fedora-latex-emacs.git"
 LABEL readme="README.org"
 
-RUN dnf clean all && \
-    rm -rf /var/log /tmp;
+RUN dnf clean all
 

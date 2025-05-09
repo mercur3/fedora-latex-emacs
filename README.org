@@ -6,9 +6,9 @@ A /bloated/ image that contains the texlive packages found in Fedora repositorie
 
 *** Version
 The latest supported versions of Fedora. Possible values:
-- 38
-- 39
-- 40
+- 41
+- 42
+- 43
 
 *** Scheme
 LaTeX scheme as packaged by Fedora. Note that there are some small modifications where certain

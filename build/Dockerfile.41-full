@@ -1,5 +1,5 @@
 
-FROM mercur3/fedora-latex-emacs:39-base
+FROM mercur3/fedora-latex-emacs:41-base
 
 ###############################################################################
 # WARNING                                                                     #
@@ -11,6 +11,5 @@ LABEL repository="https://gitlab.com/mercur3-dockerfiles/fedora-latex-emacs.git"
 LABEL readme="README.org"
 
 RUN dnf install --nodocs texlive-scheme-full && \
-    dnf clean all && \
-    rm -rf /var/log /tmp;
+    dnf clean all;
 
