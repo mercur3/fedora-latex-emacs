@@ -10,7 +10,8 @@ FROM fedora:41
 # build speed as it spends less time doing I/O operations and connecting to the mirrors.
 RUN rm /etc/dnf/dnf.conf
 COPY dnf.conf /etc/dnf/
-RUN dnf update --nodocs && \
+RUN set -eux && \
+    dnf update  --nodocs && \
     dnf install --nodocs emacs-nox texlive-scheme-medium && \
-    dnf install "tex(datetime.sty)";
+    dnf install          "tex(datetime.sty)";
 
