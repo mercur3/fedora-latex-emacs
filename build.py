@@ -19,9 +19,10 @@ FROM fedora:{version}
 # build speed as it spends less time doing I/O operations and connecting to the mirrors.
 RUN rm /etc/dnf/dnf.conf
 COPY dnf.conf /etc/dnf/
-RUN dnf update --nodocs && \\
+RUN set -eux && \\
+    dnf update  --nodocs && \\
     dnf install --nodocs emacs-nox texlive-scheme-medium && \\
-    dnf install "tex(datetime.sty)";
+    dnf install          "tex(datetime.sty)";
 
 """
         fd.write(content)
@@ -101,26 +102,39 @@ jobs:"""
     pool:
       vmImage: ubuntu-latest
     steps:
-      - script: |
+      - bash: |
           echo "Building the images"
           printf "Using %d threads\\n" $(nproc)
+          echo "------------------------------------------------------\\n"
+      - bash: |
           cd {BASE_BUILD_DIR}
+          docker build -f {dockerfile_base}   -t {tag_base} .
+        displayName: docker build -f Dockerfile -t mercur3/{tag_base} .
+      - bash: |
+          cd {BASE_BUILD_DIR}
+          docker build -f {dockerfile_medium} -t {tag_medium}.
+        displayName: docker build -f Dockerfile -t mercur3/{tag_medium} .
+      - bash: |
+          cd {BASE_BUILD_DIR}
+          docker build -f {dockerfile_full}   -t {tag_full} .
           echo "------------------------------------------------------\\n"
-          docker build -f {dockerfile_base}   -t {tag_base}   .
-          docker build -f {dockerfile_medium} -t {tag_medium} .
-          docker build -f {dockerfile_full}   -t {tag_full}   .
-          echo "------------------------------------------------------\\n"
-        displayName: docker build -f Dockerfile -t mercur3/__tag_name__ .
+        displayName: docker build -f Dockerfile -t mercur3/{tag_full} .
 
-      - script: |
-          echo "------------------------------------------------------\\n"
-          echo "$DOCKER_PASSWORD" | docker login -u mercur3 --password-stdin
-          docker push {tag_medium}
-          docker push {tag_full}
-        displayName: docker push mercur3/__tag_name__
-        condition: not(eq(variables['Build.Reason'], 'PullRequest'))
-        env:
-          DOCKER_PASSWORD: $(DOCKER_PASSWORD)
+      - task: Docker@2
+        displayName: Docker Hub Login
+        inputs:
+          command: login
+          containerRegistry: docker-hub-login
+
+      - task: Docker@2
+        displayName: Docker Hub Push
+        condition: and(succeeded(), not(eq(variables['Build.Reason'], 'PullRequest')))
+        inputs:
+          command: push
+          containerRegistry: docker-hub-login
+          images: |
+            mercur3/fedora-latex-emacs:41-medium
+            mercur3/fedora-latex-emacs:41-full
 
 """
     with open("azure-pipelines.yml", "w") as fd:
