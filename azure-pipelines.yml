@@ -14,84 +14,69 @@ pr:
 pool:
   vmImage: ubuntu-latest
 jobs:
-  - job:
-    displayName: Building on Fedora 41
+  - job: BuildAndPush
+    displayName: 'Build & Push Fedora Images'
+    strategy:
+      matrix:
+        f41:
+          fedora: '41'
+
+        f42:
+          fedora: '42'
+
+        f43:
+          fedora: '43'
+
     pool:
       vmImage: ubuntu-latest
     steps:
+      - checkout: self
+
+      # 1) Login to Docker Hub using the service connection
+      - task: Docker@2
+        displayName: 'Docker Hub Login'
+        inputs:
+          command: login
+          containerRegistry: docker-hub-login
+
+      # 2) Prep
       - script: |
-          echo "Building the images"
-          printf "Using %d threads\n" $(nproc)
+          echo "Building on Fedora $(fedora)"
+          printf "Using %d threads" $(nproc)
           cd build
-          echo "------------------------------------------------------\n"
-          docker build -f Dockerfile.41-base   -t mercur3/fedora-latex-emacs:41-base   .
-          docker build -f Dockerfile.41-medium -t mercur3/fedora-latex-emacs:41-medium .
-          docker build -f Dockerfile.41-full   -t mercur3/fedora-latex-emacs:41-full   .
-          echo "------------------------------------------------------\n"
-        displayName: docker build -f Dockerfile -t mercur3/__tag_name__ .
+        displayName: 'Prep build context'
 
-      - script: |
-          echo "------------------------------------------------------\n"
-          echo "$DOCKER_PASSWORD" | docker login -u mercur3 --password-stdin
-          docker push mercur3/fedora-latex-emacs:41-medium
-          docker push mercur3/fedora-latex-emacs:41-full
-        displayName: docker push mercur3/__tag_name__
-        condition: not(eq(variables['Build.Reason'], 'PullRequest'))
-        env:
-          DOCKER_PASSWORD: $(DOCKER_PASSWORD)
+      - task: Docker@2
+        displayName: 'Build $(fedora)-base'
+        inputs:
+          command: build
+          dockerfile: build/Dockerfile.$(fedora)-base
+          tags: |
+            mercur3/fedora-latex-emacs:$(fedora)-base
 
+      - task: Docker@2
+        displayName: 'Build $(fedora)-medium'
+        inputs:
+          command: build
+          dockerfile: build/Dockerfile.$(fedora)-medium
+          tags: |
+            mercur3/fedora-latex-emacs:$(fedora)-medium
 
-  - job:
-    displayName: Building on Fedora 42
-    pool:
-      vmImage: ubuntu-latest
-    steps:
-      - script: |
-          echo "Building the images"
-          printf "Using %d threads\n" $(nproc)
-          cd build
-          echo "------------------------------------------------------\n"
-          docker build -f Dockerfile.42-base   -t mercur3/fedora-latex-emacs:42-base   .
-          docker build -f Dockerfile.42-medium -t mercur3/fedora-latex-emacs:42-medium .
-          docker build -f Dockerfile.42-full   -t mercur3/fedora-latex-emacs:42-full   .
-          echo "------------------------------------------------------\n"
-        displayName: docker build -f Dockerfile -t mercur3/__tag_name__ .
+      - task: Docker@2
+        displayName: 'Build $(fedora)-full'
+        inputs:
+          command: build
+          dockerfile: build/Dockerfile.$(fedora)-full
+          tags: |
+            mercur3/fedora-latex-emacs:$(fedora)-full
 
-      - script: |
-          echo "------------------------------------------------------\n"
-          echo "$DOCKER_PASSWORD" | docker login -u mercur3 --password-stdin
-          docker push mercur3/fedora-latex-emacs:42-medium
-          docker push mercur3/fedora-latex-emacs:42-full
-        displayName: docker push mercur3/__tag_name__
-        condition: not(eq(variables['Build.Reason'], 'PullRequest'))
-        env:
-          DOCKER_PASSWORD: $(DOCKER_PASSWORD)
-
-
-  - job:
-    displayName: Building on Fedora 43
-    pool:
-      vmImage: ubuntu-latest
-    steps:
-      - script: |
-          echo "Building the images"
-          printf "Using %d threads\n" $(nproc)
-          cd build
-          echo "------------------------------------------------------\n"
-          docker build -f Dockerfile.43-base   -t mercur3/fedora-latex-emacs:43-base   .
-          docker build -f Dockerfile.43-medium -t mercur3/fedora-latex-emacs:43-medium .
-          docker build -f Dockerfile.43-full   -t mercur3/fedora-latex-emacs:43-full   .
-          echo "------------------------------------------------------\n"
-        displayName: docker build -f Dockerfile -t mercur3/__tag_name__ .
-
-      - script: |
-          echo "------------------------------------------------------\n"
-          echo "$DOCKER_PASSWORD" | docker login -u mercur3 --password-stdin
-          docker push mercur3/fedora-latex-emacs:43-medium
-          docker push mercur3/fedora-latex-emacs:43-full
-        displayName: docker push mercur3/__tag_name__
-        condition: not(eq(variables['Build.Reason'], 'PullRequest'))
-        env:
-          DOCKER_PASSWORD: $(DOCKER_PASSWORD)
-
+      - task: Docker@2
+        displayName: 'Push $(fedora)-medium & $(fedora)-full'
+        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+        inputs:
+          command: push
+          containerRegistry: docker-hub-login
+          images: |
+            mercur3/fedora-latex-emacs:$(fedora)-medium
+            mercur3/fedora-latex-emacs:$(fedora)-full
 
