@@ -80,63 +80,49 @@ pr:
       - master
 pool:
   vmImage: ubuntu-latest
-jobs:
-  - job: BuildAndPush
-    displayName: 'Build & Push Fedora Images'
-    strategy:
-      matrix:"""
-
+jobs:"""
     for f in SUPPORTED_FEDORA_VERSIONS:
+        # params
+        dockerfile_base = f"Dockerfile.{f}-base"
+        dockerfile_medium = f"Dockerfile.{f}-medium"
+        dockerfile_full = f"Dockerfile.{f}-full"
+
+        tag_base = f"mercur3/fedora-latex-emacs:{f}-base"
+        tag_medium = f"mercur3/fedora-latex-emacs:{f}-medium"
+        tag_full = f"mercur3/fedora-latex-emacs:{f}-full"
+
+        # build =Dockerfile=
+        generate_dockerfiles(f, tag_base, tag_medium, tag_full)
+
+        # build =azure_pipelines.yml=
         output += f"""
-        f{f}:
-          fedora: '{f}'
-"""
-    output += """
+  - job:
+    displayName: Building on Fedora {f}
     pool:
       vmImage: ubuntu-latest
     steps:
-      - checkout: self
-
-      # 1) Login to Docker Hub using the service connection
-      - task: Docker@2
-        displayName: 'Docker Hub Login'
-        inputs:
-          command: login
-          containerRegistry: docker-hub-login
-
-      # 2) Prep
       - script: |
-          echo "Building on Fedora $(fedora)"
-          printf "Using %d threads" $(nproc)
-          cd build
-        displayName: 'Prep build context'
-"""
+          echo "Building the images"
+          printf "Using %d threads\\n" $(nproc)
+          cd {BASE_BUILD_DIR}
+          echo "------------------------------------------------------\\n"
+          docker build -f {dockerfile_base}   -t {tag_base}   .
+          docker build -f {dockerfile_medium} -t {tag_medium} .
+          docker build -f {dockerfile_full}   -t {tag_full}   .
+          echo "------------------------------------------------------\\n"
+        displayName: docker build -f Dockerfile -t mercur3/__tag_name__ .
 
-    # build each variant
-    for l in LATEX_CONFIG:
-        output += f"""
-      - task: Docker@2
-        displayName: 'Build $(fedora)-{l}'
-        inputs:
-          command: build
-          dockerfile: build/Dockerfile.$(fedora)-{l}
-          tags: |
-            mercur3/fedora-latex-emacs:$(fedora)-{l}
-"""
+      - script: |
+          echo "------------------------------------------------------\\n"
+          echo "$DOCKER_PASSWORD" | docker login -u mercur3 --password-stdin
+          docker push {tag_medium}
+          docker push {tag_full}
+        displayName: docker push mercur3/__tag_name__
+        condition: not(eq(variables['Build.Reason'], 'PullRequest'))
+        env:
+          DOCKER_PASSWORD: $(DOCKER_PASSWORD)
 
-    # push the images
-    output += f"""
-      - task: Docker@2
-        displayName: 'Push $(fedora)-medium & $(fedora)-full'
-        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-        inputs:
-          command: push
-          containerRegistry: docker-hub-login
-          images: |
-            mercur3/fedora-latex-emacs:$(fedora)-medium
-            mercur3/fedora-latex-emacs:$(fedora)-full
 """
-
     with open("azure-pipelines.yml", "w") as fd:
         output += "\n"
         print(output)
