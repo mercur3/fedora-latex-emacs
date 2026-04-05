@@ -15,46 +15,6 @@ pool:
   vmImage: ubuntu-latest
 jobs:
   - job:
-    displayName: Building on Fedora 41
-    pool:
-      vmImage: ubuntu-latest
-    steps:
-      - bash: |
-          echo "Building the images"
-          printf "Using %d threads\n" $(nproc)
-          echo "------------------------------------------------------\n"
-      - bash: |
-          cd build
-          docker build -f Dockerfile.41-base   -t mercur3/fedora-latex-emacs:41-base .
-        displayName: docker build -f Dockerfile -t mercur3/mercur3/fedora-latex-emacs:41-base .
-      - bash: |
-          cd build
-          docker build -f Dockerfile.41-medium -t mercur3/fedora-latex-emacs:41-medium .
-        displayName: docker build -f Dockerfile -t mercur3/mercur3/fedora-latex-emacs:41-medium .
-      - bash: |
-          cd build
-          docker build -f Dockerfile.41-full   -t mercur3/fedora-latex-emacs:41-full .
-          echo "------------------------------------------------------\n"
-        displayName: docker build -f Dockerfile -t mercur3/mercur3/fedora-latex-emacs:41-full .
-
-      - task: Docker@2
-        displayName: Docker Hub Login
-        inputs:
-          command: login
-          containerRegistry: docker-hub-login
-
-      - task: Docker@2
-        displayName: Docker Hub Push
-        condition: and(succeeded(), not(eq(variables['Build.Reason'], 'PullRequest')))
-        inputs:
-          command: push
-          containerRegistry: docker-hub-login
-          images: |
-            mercur3/fedora-latex-emacs:41-medium
-            mercur3/fedora-latex-emacs:41-full
-
-
-  - job:
     displayName: Building on Fedora 42
     pool:
       vmImage: ubuntu-latest
@@ -116,6 +76,46 @@ jobs:
           docker build -f Dockerfile.43-full   -t mercur3/fedora-latex-emacs:43-full .
           echo "------------------------------------------------------\n"
         displayName: docker build -f Dockerfile -t mercur3/mercur3/fedora-latex-emacs:43-full .
+
+      - task: Docker@2
+        displayName: Docker Hub Login
+        inputs:
+          command: login
+          containerRegistry: docker-hub-login
+
+      - task: Docker@2
+        displayName: Docker Hub Push
+        condition: and(succeeded(), not(eq(variables['Build.Reason'], 'PullRequest')))
+        inputs:
+          command: push
+          containerRegistry: docker-hub-login
+          images: |
+            mercur3/fedora-latex-emacs:41-medium
+            mercur3/fedora-latex-emacs:41-full
+
+
+  - job:
+    displayName: Building on Fedora 44
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+      - bash: |
+          echo "Building the images"
+          printf "Using %d threads\n" $(nproc)
+          echo "------------------------------------------------------\n"
+      - bash: |
+          cd build
+          docker build -f Dockerfile.44-base   -t mercur3/fedora-latex-emacs:44-base .
+        displayName: docker build -f Dockerfile -t mercur3/mercur3/fedora-latex-emacs:44-base .
+      - bash: |
+          cd build
+          docker build -f Dockerfile.44-medium -t mercur3/fedora-latex-emacs:44-medium .
+        displayName: docker build -f Dockerfile -t mercur3/mercur3/fedora-latex-emacs:44-medium .
+      - bash: |
+          cd build
+          docker build -f Dockerfile.44-full   -t mercur3/fedora-latex-emacs:44-full .
+          echo "------------------------------------------------------\n"
+        displayName: docker build -f Dockerfile -t mercur3/mercur3/fedora-latex-emacs:44-full .
 
       - task: Docker@2
         displayName: Docker Hub Login
