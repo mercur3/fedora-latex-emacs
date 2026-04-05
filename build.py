@@ -3,6 +3,7 @@
 SUPPORTED_FEDORA_VERSIONS: list[int] = [42, 43, 44]
 LATEX_CONFIG = ["base", "medium", "full"]
 BASE_BUILD_DIR = "build"
+REPOSITORY = "mercur3/fedora-latex-emacs"
 
 
 def generate_dockerfiles(version: int, tag_base: str, tag_medium: str, tag_full: str) -> None:
@@ -88,9 +89,9 @@ jobs:"""
         dockerfile_medium = f"Dockerfile.{f}-medium"
         dockerfile_full = f"Dockerfile.{f}-full"
 
-        tag_base = f"mercur3/fedora-latex-emacs:{f}-base"
-        tag_medium = f"mercur3/fedora-latex-emacs:{f}-medium"
-        tag_full = f"mercur3/fedora-latex-emacs:{f}-full"
+        tag_base = f"{REPOSITORY}:{f}-base"
+        tag_medium = f"{REPOSITORY}:{f}-medium"
+        tag_full = f"{REPOSITORY}:{f}-full"
 
         # build =Dockerfile=
         generate_dockerfiles(f, tag_base, tag_medium, tag_full)
@@ -127,14 +128,22 @@ jobs:"""
           containerRegistry: docker-hub-login
 
       - task: Docker@2
-        displayName: Docker Hub Push
+        displayName: 'Push {tag_medium}'
         condition: and(succeeded(), not(eq(variables['Build.Reason'], 'PullRequest')))
         inputs:
           command: push
           containerRegistry: docker-hub-login
-          images: |
-            mercur3/fedora-latex-emacs:41-medium
-            mercur3/fedora-latex-emacs:41-full
+          repository: '{REPOSITORY}'
+          tags: '{tag_medium.split(sep=":")[1]}'
+
+      - task: Docker@2
+        displayName: 'Push {tag_full}'
+        condition: and(succeeded(), not(eq(variables['Build.Reason'], 'PullRequest')))
+        inputs:
+          command: push
+          containerRegistry: docker-hub-login
+          repository: '{REPOSITORY}'
+          tags: '{tag_full.split(sep=":")[1]}'
 
 """
     with open("azure-pipelines.yml", "w") as fd:
