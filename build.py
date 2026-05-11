@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-SUPPORTED_FEDORA_VERSIONS: list[int] = [42, 43, 44]
+SUPPORTED_FEDORA_VERSIONS: list[int] = [43, 44]
 LATEX_CONFIG = ["base", "medium", "full"]
 BASE_BUILD_DIR = "build"
 REPOSITORY = "mercur3/fedora-latex-emacs"
