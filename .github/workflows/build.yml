@@ -36,7 +36,7 @@ jobs:
       GHCR_REPOSITORY: ghcr.io/mercur3/fedora-latex-emacs
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: System info
         run: |
