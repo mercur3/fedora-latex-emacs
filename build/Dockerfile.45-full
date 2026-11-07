@@ -1,5 +1,5 @@
 
-FROM mercur3/fedora-latex-emacs:43-base
+FROM mercur3/fedora-latex-emacs:45-base
 
 ###############################################################################
 # WARNING                                                                     #
